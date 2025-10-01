@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNI/HOST Collection - Tuhin Droid Zone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --success: #10b981;
+            --border: #e2e8f0;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+        
+        .logo i {
+            font-size: 3rem;
+        }
+        
+        .logo h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+        }
+        
+        .tagline {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .search-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            position: relative;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow);
+            padding-left: 60px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+        
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .category-btn {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .sni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 4rem;
+        }
+        
+        .sni-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--border);
+        }
+        
+        .sni-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .sni-list {
+            list-style: none;
+        }
+        
+        .sni-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .sni-item:last-child {
+            border-bottom: none;
+        }
+        
+        .sni-domain {
+            font-family: 'Courier New', monospace;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+        
+        .copy-btn {
+            background: var(--light);
+            border: 1px solid var(--border);
+            color: var(--dark);
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        
+        .copy-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .copy-btn.copied {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            margin: 4rem 0;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .stat-item p {
+            font-size: 1.1rem;
+            color: var(--secondary);
+        }
+        
+        .channels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            margin: 4rem 0;
+        }
+        
+        .channel-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            transition: transform 0.3s;
+        }
+        
+        .channel-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .channel-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .channel-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .channel-desc {
+            color: var(--secondary);
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+        
+        .channel-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 14px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+            font-size: 1.05rem;
+        }
+        
+        .channel-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 12px;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .developer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2.5rem;
+            margin-top: 2.5rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+        
+        .copyright a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .copyright a:hover {
+            color: white;
+        }
+        
+        .results-info {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .sni-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 25px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .logo h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tagline {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-server"></i>
+                <h1>SNI/HOST Collection</h1>
+            </div>
+            <p class="tagline">Useful SNI/HOST for Net Bypass & Free Internet Experience 😝</p>
+            
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-box" placeholder="Search for specific SNI domains (e.g. youtube, netflix, facebook)...">
+            </div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="categories">
+            <button class="category-btn active" data-category="all">All SNIs</button>
+            <button class="category-btn" data-category="streaming">Video Streaming</button>
+            <button class="category-btn" data-category="ott">OTT & Live TV</button>
+            <button class="category-btn" data-category="social">Social Media</button>
+            <button class="category-btn" data-category="gaming">Gaming</button>
+            <button class="category-btn" data-category="voip">Communication</button>
+            <button class="category-btn" data-category="other">Other Important</button>
+        </div>
+        
+        <div class="results-info" id="resultsInfo">Showing all 150+ SNI domains</div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <h3>150+</h3>
+                <p>SNI/HOST Domains</p>
+            </div>
+            <div class="stat-item">
+                <h3>6</h3>
+                <p>Categories</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Updated Regularly</p>
+            </div>
+        </div>
+        
+        <div class="sni-grid">
+            <!-- Video Streaming -->
+            <div class="sni-card" data-category="streaming">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <h2 class="card-title">Video Streaming</h2>
+                </div>
+                <ul class="sni-list">
+                    <li class="sni-item">
+                        <span class="sni-domain">youtube.com</span>
+                        <button class="copy-btn" data-sni="youtube.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.youtube.com</span>
+                        <button class="copy-btn" data-sni="www.youtube.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">m.youtube.com</span>
+                        <button class="copy-btn" data-sni="m.youtube.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">upload.youtube.com</span>
+                        <button class="copy-btn" data-sni="upload.youtube.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">ytstatic.l.google.com</span>
+                        <button class="copy-btn" data-sni="ytstatic.l.google.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">netflix.com</span>
+                        <button class="copy-btn" data-sni="netflix.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.netflix.com</span>
+                        <button class="copy-btn" data-sni="www.netflix.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">custom-netflix.com</span>
+                        <button class="copy-btn" data-sni="custom-netflix.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">tiktok.com</span>
+                        <button class="copy-btn" data-sni="tiktok.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.tiktok.com</span>
+                        <button class="copy-btn" data-sni="www.tiktok.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- OTT & Live TV -->
+            <div class="sni-card" data-category="ott">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-tv"></i>
+                    </div>
+                    <h2 class="card-title">OTT & Live TV</h2>
+                </div>
+                <ul class="sni-list">
+                    <li class="sni-item">
+                        <span class="sni-domain">www.hoichoi.tv</span>
+                        <button class="copy-btn" data-sni="www.hoichoi.tv">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">api.hoichoi.tv</span>
+                        <button class="copy-btn" data-sni="api.hoichoi.tv">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.tsports.com</span>
+                        <button class="copy-btn" data-sni="www.tsports.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">live-cdn.tsports.com</span>
+                        <button class="copy-btn" data-sni="live-cdn.tsports.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">mapi-cdn.tsports.com</span>
+                        <button class="copy-btn" data-sni="mapi-cdn.tsports.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">bongobd.com</span>
+                        <button class="copy-btn" data-sni="bongobd.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.bongobd.com</span>
+                        <button class="copy-btn" data-sni="www.bongobd.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">api.bongobd.com</span>
+                        <button class="copy-btn" data-sni="api.bongobd.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.chorki.com</span>
+                        <button class="copy-btn" data-sni="www.chorki.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">api.chorki.com</span>
+                        <button class="copy-btn" data-sni="api.chorki.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Social Media -->
+            <div class="sni-card" data-category="social">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h2 class="card-title">Social Media</h2>
+                </div>
+                <ul class="sni-list">
+                    <li class="sni-item">
+                        <span class="sni-domain">facebook.com</span>
+                        <button class="copy-btn" data-sni="facebook.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.facebook.com</span>
+                        <button class="copy-btn" data-sni="www.facebook.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">m.facebook.com</span>
+                        <button class="copy-btn" data-sni="m.facebook.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">scontent.xx.fbcdn.net</span>
+                        <button class="copy-btn" data-sni="scontent.xx.fbcdn.net">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">static.xx.fbcdn.net</span>
+                        <button class="copy-btn" data-sni="static.xx.fbcdn.net">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">instagram.com</span>
+                        <button class="copy-btn" data-sni="instagram.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.instagram.com</span>
+                        <button class="copy-btn" data-sni="www.instagram.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">m.instagram.com</span>
+                        <button class="copy-btn" data-sni="m.instagram.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">graph.instagram.com</span>
+                        <button class="copy-btn" data-sni="graph.instagram.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">web.whatsapp.com</span>
+                        <button class="copy-btn" data-sni="web.whatsapp.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Gaming -->
+            <div class="sni-card" data-category="gaming">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h2 class="card-title">Gaming</h2>
+                </div>
+                <ul class="sni-list">
+                    <li class="sni-item">
+                        <span class="sni-domain">ff.garena.com</span>
+                        <button class="copy-btn" data-sni="ff.garena.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">api.garena.com</span>
+                        <button class="copy-btn" data-sni="api.garena.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">pubgmobile.com</span>
+                        <button class="copy-btn" data-sni="pubgmobile.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.pubgmobile.com</span>
+                        <button class="copy-btn" data-sni="www.pubgmobile.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">dlied1.qq.com</span>
+                        <button class="copy-btn" data-sni="dlied1.qq.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">codm.com</span>
+                        <button class="copy-btn" data-sni="codm.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.codm.com</span>
+                        <button class="copy-btn" data-sni="www.codm.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Communication -->
+            <div class="sni-card" data-category="voip">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <h2 class="card-title">Communication</h2>
+                </div>
+                <ul class="sni-list">
+                    <li class="sni-item">
+                        <span class="sni-domain">imo.im</span>
+                        <button class="copy-btn" data-sni="imo.im">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.imo.im</span>
+                        <button class="copy-btn" data-sni="www.imo.im">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">api.imo.im</span>
+                        <button class="copy-btn" data-sni="api.imo.im">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">meet.google.com</span>
+                        <button class="copy-btn" data-sni="meet.google.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">zoom.us</span>
+                        <button class="copy-btn" data-sni="zoom.us">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.zoom.us</span>
+                        <button class="copy-btn" data-sni="www.zoom.us">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Other Important -->
+            <div class="sni-card" data-category="other">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h2 class="card-title">Other Important</h2>
+                </div>
+                <ul class="sni-list">
+                    <li class="sni-item">
+                        <span class="sni-domain">www.google.com</span>
+                        <button class="copy-btn" data-sni="www.google.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">drive.google.com</span>
+                        <button class="copy-btn" data-sni="drive.google.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">docs.google.com</span>
+                        <button class="copy-btn" data-sni="docs.google.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">play.google.com</span>
+                        <button class="copy-btn" data-sni="play.google.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">cloudflare.com</span>
+                        <button class="copy-btn" data-sni="cloudflare.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">one.one.one.one</span>
+                        <button class="copy-btn" data-sni="one.one.one.one">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">apple.com</span>
+                        <button class="copy-btn" data-sni="apple.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">www.apple.com</span>
+                        <button class="copy-btn" data-sni="www.apple.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                    <li class="sni-item">
+                        <span class="sni-domain">itunes.apple.com</span>
+                        <button class="copy-btn" data-sni="itunes.apple.com">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="channels">
+            <div class="channel-card">
+                <div class="channel-icon">
+                    <i class="fab fa-telegram"></i>
+                </div>
+                <h3 class="channel-name">Tuhin Droid Zone</h3>
+                <p class="channel-desc">Official channel for server configurations and updates</p>
+                <a href="https://t.me/+sPqgUAVp-X5iOWU9" target="_blank" class="channel-btn">Join Channel</a>
+            </div>
+            
+            <div class="channel-card">
+                <div class="channel-icon">
+                    <i class="fab fa-telegram"></i>
+                </div>
+                <h3 class="channel-name">TUS FZ</h3>
+                <p class="channel-desc">Premium server configurations and tech support</p>
+                <a href="https://t.me/TUS_FZ" target="_blank" class="channel-btn">Join Channel</a>
+            </div>
+            
+            <div class="channel-card">
+                <div class="channel-icon">
+                    <i class="fab fa-telegram"></i>
+                </div>
+                <h3 class="channel-name">Tuhin Bro</h3>
+                <p class="channel-desc">Developer Info & Channel's</p>
+                <a href="https://t.me/TuhinBro" target="_blank" class="channel-btn">View</a>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About SNI/HOST</h3>
+                    <p>Useful/Important SNI/HOST For Any Pack Bypass & Free Internet Experience. Regularly Updated With The Latest Domains.</p>
+                    <div class="developer">
+                        <i class="fas fa-code"></i>
+                        <p>Powered By: <a href="https://t.me/TuhinBroh">TuhinBroh</a></p>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Developer</h3>
+                    <p>For technical support, collaboration, or custom solutions:</p>
+                    <div class="developer" style="margin-top: 15px;">
+                        <i class="fas fa-globe"></i>
+                        <a href="https://info.tuhinbro.website" style="color: #cbd5e1; text-decoration: none;">info.tuhinbro.website</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 SNI/HOST Collection. All rights reserved. | Powered By: t.me/TuhinBroh</p>
+                <p>Developer: <a href="https://info.tuhinbro.website">Yeasinul Hoque Tuhin</a></p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Copy SNI function - FIXED
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const sniValue = this.getAttribute('data-sni');
+                    
+                    // Create a temporary textarea to copy from
+                    const textarea = document.createElement('textarea');
+                    textarea.value = sniValue;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    
+                    try {
+                        const successful = document.execCommand('copy');
+                        if (successful) {
+                            // Visual feedback
+                            const originalText = this.innerHTML;
+                            this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                            this.classList.add('copied');
+                            
+                            setTimeout(() => {
+                                this.innerHTML = originalText;
+                                this.classList.remove('copied');
+                            }, 2000);
+                        }
+                    } catch (err) {
+                        console.error('Failed to copy: ', err);
+                        // Fallback for modern browsers
+                        navigator.clipboard.writeText(sniValue).then(() => {
+                            const originalText = this.innerHTML;
+                            this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                            this.classList.add('copied');
+                            
+                            setTimeout(() => {
+                                this.innerHTML = originalText;
+                                this.classList.remove('copied');
+                            }, 2000);
+                        }).catch(err => {
+                            console.error('Failed to copy: ', err);
+                            alert('Failed to copy text. Please try again.');
+                        });
+                    }
+                    
+                    document.body.removeChild(textarea);
+                });
+            });
+            
+            // Category filtering
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const sniCards = document.querySelectorAll('.sni-card');
+            const searchBox = document.querySelector('.search-box');
+            const resultsInfo = document.getElementById('resultsInfo');
+            
+            function updateResultsCount() {
+                const visibleCards = document.querySelectorAll('.sni-card[style=""]').length + 
+                                   document.querySelectorAll('.sni-card:not([style])').length;
+                resultsInfo.textContent = `Showing ${visibleCards} categories with SNI domains`;
+            }
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Update active button
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter cards
+                    sniCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                    
+                    updateResultsCount();
+                });
+            });
+            
+            // Search functionality
+            searchBox.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                if (searchTerm.length === 0) {
+                    // Show all cards if search is empty
+                    sniCards.forEach(card => {
+                        card.style.display = 'block';
+                    });
+                    updateResultsCount();
+                    return;
+                }
+                
+                let visibleCount = 0;
+                
+                sniCards.forEach(card => {
+                    const domains = card.querySelectorAll('.sni-domain');
+                    let hasMatch = false;
+                    
+                    domains.forEach(domain => {
+                        if (domain.textContent.toLowerCase().includes(searchTerm)) {
+                            hasMatch = true;
+                        }
+                    });
+                    
+                    if (hasMatch) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                resultsInfo.textContent = `Found ${visibleCount} categories matching "${searchTerm}"`;
+            });
+            
+            // Initialize results count
+            updateResultsCount();
+        });
+    </script>
+</body>
+</html>
